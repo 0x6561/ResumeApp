@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+
+    <title></title>
+  </head>
+  <body>
+    <div class="jumbotron">
+      <h1 class="display-4">Hello, world!</h1>
+      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+      <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+      <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+
+
+    <!-- JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{url_for('static', filename='js/jquery-3.3.1.js')}}"></script>
+    <script src="{{url_for('static', filename='js/popper.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+    console.log("script")
+    console.log("script")  <script>
+      console.log("script");   console.log("script")
+    function get_resume(){
+    fetch('/get')
+  .then(function(response) {
+      return response.json();
+    })
+  .then(function(myJson) {
+    console.log('boo');
+      console.log(JSON.stringify(myJson));
+    })
+    }
+window.onload = get_resume;
+
+  </script>
+  </body>
+</html>

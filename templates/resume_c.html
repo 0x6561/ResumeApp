@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/jquery-ui.css')}}">
+
+    <title id="title"></title>
+  </head>
+  <body>
+    <div class="container-fluid h-100 w-75">
+
+      <div id="name" class="row justify-content-center align-items-center h1"></div>
+      <div id="location" class="h4 row align-items-center justify-content-center container">
+      </div>
+      <div class="row justify-content-center align-items-center h6">
+        <div id="email" class="col"></div>
+        <div id="website" class="col"></div>
+        <div id="github" class="col"></div>
+        <div id="linkedin"class="col"></div>
+      </div>
+      <br>
+
+      <!-- Enable reordering of sections -->
+      <ul id="sortable">
+        <li>
+          <!-- EDUCATION SECTION --> 
+          <div id="EDUCATION_DIV">
+            <div class="container row justify-content-left align-items-left h3 border-bottom">Education</div>
+            <!-- DEGREE SECTION --> 
+            <div id="EDUCATION" class="container"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- KNOWLEDGE SECTION --> 
+          <div id="KNOWLEDGE_DIV">
+            <div class="row justify-content-left align-items-left h4 border-bottom">KNOWLEDGE</div>
+            <div id="KNOWLEDGE" class="container row"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- PROGRAMMING LANGUAGES SECTION --> 
+          <div id+"PROGRAMMING_LANGUAGE_DIV">
+            <div class="row justify-content-left align-items-left h4 border-bottom">PROGRAMMING LANGUAGES</div>
+            <div id="LANGUAGES" class="container row"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- FRAMEWORK SECTION --> 
+          <div id="FRAMEWORKS_DIV">
+            <div class="row justify-content-left align-items-left h4 border-bottom">FRAMEWORKS</div>
+            <div id="FRAMEWORKS" class="container row"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- DATABASE SECTION --> 
+          <div id="DATABASE_DIV">
+            <div class="row justify-content-left align-items-left h5 border-bottom">DATABASES</div>
+            <div id="DATABASE" class="container row"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- OPERATING SYSTEMS SECTION --> 
+          <div id+"FRAMEWORKS_DIV">
+            <div class="container row justify-content-left align-items-left h6 border-bottom">OPERATING SYSTEMS</div>
+            <div id="OS" class="container row"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- CLASS PROJECTS SECTION --> 
+          <div id="CLASS_PROJECTS_DIV">
+            <div class="container row justify-content-left align-items-left h6 border-bottom">CLASS PROJECTS</div>
+            <div id="CPROJ" class="container row"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- RESEARCH --> 
+          <div id="RESEARCH_DIV">
+            <div class="container row justify-content-left align-items-left h6 border-bottom">RESEARCH</div>
+            <div id="RSCH" class="container row"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- PERSONAL PROJECTS--> 
+          <div id="PPROJ_DIV">
+            <div class="container row justify-content-left align-items-left h6 border-bottom">PERSONAL PROJECTS</div>
+            <div id="PPROJ" class="container row"></div>
+            <br>
+          </div>
+        </li>
+
+        <li>
+          <!-- WORK HISTORY--> 
+          <div id="WORK_DIV">
+            <div class="container row justify-content-left align-items-left h6 border-bottom">WORK HISTORY</div>
+            <div id="WORK" class="container"></div>
+            <br>
+          </div>
+    </div>
+        </li>
+      </ul>
+
+
+      <!-- JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="{{url_for('static', filename='js/jquery-3.3.1.js')}}"></script>
+      <script src="{{url_for('static', filename='js/popper.js')}}"></script>
+      <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+      <script src="{{url_for('static', filename='js/jquery-ui.js')}}"></script>
+      <script>
+
+        $(document).ready(function(){
+          $.ajax({
+            type: 'GET',
+            // This is the type of data you're expecting back from the server.
+            dataType: 'json',
+            url: 'get',
+            success: function (resume_json) {
+              console.log('sucess!');
+              display_resume(resume_json);
+            }
+          });
+
+          function display_resume(resume){
+            $('#name').html(resume.name);
+            $('#location').html(resume.location);
+            if('email' in resume) $('#email').html('<a href="'+resume.email + '">' + resume.email + '</a>');
+            if('website' in resume) $('#website').html('<a href="'+resume.website + '">' + resume.website + '</a>');
+            if('github' in resume) $('#github').html('<a href="'+resume.github + '">' + resume.github + '</a>');
+            if('linkedin' in resume) $('#linkedin').html('<a href="'+resume.linkedin + '">' + resume.linkedin + '</a>');
+
+            //EDUCATION
+            $.each(resume.Education, function(index, degree){
+              $('#EDUCATION').append('<div class="row text-white">' + degree.degree + ' - ' + degree.Institution + '</div>');
+              if(['Cumulative GPA'] in degree )$('#EDUCATION').append('<div class="row"><li>Cumulative GPA: ' + degree['Cumulative GPA'] + '</li></div>');
+            });
+
+            //KNOWLEDGE
+            $.each(resume.Knowledge, function(index, knowledge){
+              $('#KNOWLEDGE').append('<div class="text-white col-3">' + knowledge + '</div>');
+            });
+
+            //Programming Languages
+            $.each(resume['Programming Languages'], function(index, language){
+              $('#LANGUAGES').append('<div class="text-white col-3">' + language + '</div>');
+            });
+
+            //Frameworks
+            $.each(resume.Frameworks, function(index, framework){
+              $('#FRAMEWORKS').append('<div class="text-white col-3">' + framework + '</div>');
+            });
+
+            //Database
+            $.each(resume.Database, function(index, dbtype){
+              var dbkind = '<div class="container row border-info border-bottom text-white">' + index + '</div>';
+              $('#DATABASE').append(dbkind);
+              $.each(resume.Database[index], function(index, db){
+                var dbase = '<div class="container row col text-white">' + db + '</div>';
+                $('#DATABASE').append(dbase);
+              });
+            });
+
+
+            //Operating Systems
+            $.each(resume['Operating Systems'], function(index, os){
+              $('#OS').append('<div class="row text-white col-3">' + os + '</div>');
+            });
+
+            //Class Projects
+            $.each(resume['Class Projects'], function(index, cproj){
+              $('#CPROJ').append('<div class="row text-white"><li>' + cproj + '</li></div>');
+            });
+
+            //Research
+            $.each(resume['Research'], function(index, rsch){
+              $('#RSCH').append('<div class="row text-white"><li>' + rsch + '</li></div>');
+            });
+
+            //Personal Projects
+            $.each(resume['Personal Projects'], function(index, pproj){
+              $('#PPROJ').append('<div class="row text-white"><li>' + pproj + '</li></div>');
+            });
+
+            //WORK HISTORY
+            $.each(resume['Work Experience'], function(index, job){
+              var position = '<div class="row container">';
+              position += '<div class="w-25">';
+              position += '<div class="container row text-white">Employer: ' + job.Employer + '</div>';
+              position += '<div class="container row text-white">Title: ' + job.Position + '</div>';
+              position += '<div class="container row text-white">from: ' + job.from + '  to: ' + job.to + '</div>';
+              position += '</div>';
+              position += '<div class="w-75">';
+              position += '<div class="container row text-white">Duties: <br>' + job.Duties + '</div>';
+              position += '</div>';
+              position += '</div>';
+              $('#WORK').append(position);
+            });
+
+          }//close display_resume
+        });//close jquery
+      </script>
+      <script>$("#sortable").sortable();</script>
+  </body>
+</html>

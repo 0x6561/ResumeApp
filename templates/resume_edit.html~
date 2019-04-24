@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <!-- Jquery UI CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/jquery-ui.css')}}">
+
+    <title>{{resume.name}} - Resume</title>
+  </head>
+  <body class="container-fluid h-75 w-75">
+    <form>
+      <div id="EDIT">
+
+        <!--     NAME     -->
+        <div id="NAME" class="row justify-content-center align-items-center h1 form-inline">
+          <label class="control-label" for="name">Name</label>
+          <input type="text" class="form-control" id="name" aria-describedby="name" value="{{resume.name}}">
+        </div>
+        <br>
+
+        <!--    LOCATION  -->
+        <div id="LOCATION" class="h4 row align-items-center justify-content-center container form-inline">
+          <label class="control-label" for="location">Location</label>
+          <input type="text" class="form-control" id="location" aria-describedby="name" value="{{resume.location}}">
+        </div>
+        <br>
+
+        <!--    LINKS       -->
+        <div id="LINKS">
+          <div class="row text-white justify-content-center align-items-center form-inline">
+            <label class="control-label" for="email">Email</label>
+            <input type="text" class="form-control" id="email" aria-describedby="email" value="{{resume.email}}">
+            <label class="control-label" for="website">Website</label>
+            <input type="text" class="form-control" id="website" aria-describedby="website" value="{{resume.website}}">
+            <label class="control-label" for="github">Github</label>
+            <input type="text" class="form-control" id="github" aria-describedby="github" value="{{resume.github}}">
+            <label class="control-label" for="linkedin">LinkedIn</label>
+            <input type="text" class="form-control" id="linkedin" aria-describedby="linkedin" value="{{resume.Linkedin}}">
+          </div>
+          <br>
+        </div>
+
+        <ul id="sortable">
+          <li>
+        <!-- EDUCATION SECTION --> 
+        <div id="EDUCATION">
+          <div class="container row justify-content-left align-items-left h3 border-bottom">Education</div>
+          <!-- DEGREE SECTION --> 
+          <div id="degree_div" class="container row border form-group">
+            {% for degree in resume.Education %}
+            <div class="container text-white border form-inline DEGREE">
+              <label class="control-label" for="degree-{{loop.index}}">Degree: </label>
+              <input type="text" class="form-control DEGREE_DEGREE" id="degree-{{loop.index}}" aria-describedby="degree" value="{{degree.degree}}">
+              <label class="control-label" for="institution-{{loop.index}}">Institution: </label>
+              <input type="text" class="form-control DEGREE_INSTITUTION" id="institution-{{loop.index}}" aria-describedby="institution" value="{{degree.Institution}}">
+              {% if degree['Cumulative GPA'] is defined %}
+              <label class="control-label" for="cgpa-{{loop.index}}">Cumulative GPA: </label>
+              <input type="text" class="form-control DEGREE_GPA" id="cgpa-{{loop.index}}" aria-describedby="gpa" value="{{degree['Cumulative GPA']}}">
+              {% endif %}
+              <button class="btn btn-danger row remove_button" type="button">Remove</button>
+            </div>
+            <script> var degree_ctr = {{loop.index}};</script>
+            {% endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_degree" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- KNOWLEDGE SECTION --> 
+        <div id="KNOWLEDGE">
+          <div class="container row justify-content-left align-items-left h4 border-bottom">KNOWLEDGE</div>
+          <div id="knowledge_div" class="container row form-inline">
+            {% for wisdom in resume.Knowledge %}
+            <div class="container row">
+              <input type="text" class="form-control w-75 KNOWLEDGE_SKILL" id="knowledge-{{loop.index}}" aria-describedby="{{wisdom}}" value="{{wisdom}}">
+              <button class="btn form-control btn-danger remove_button" type="button">Remove</button>
+            </div>
+            <script> var knowledge_ctr = {{loop.index}};</script>
+            {% endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_knowledge" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- PROGRAMMING LANGUAGES SECTION --> 
+        <div id="PROGRAMMING_LANGUAGES">
+          <div class="container row justify-content-left align-items-left h4 border-bottom">PROGRAMMING LANGUAGES</div>
+          <div id="language_div" class="container row form-inline">
+            {% for language in resume['Programming Languages'] %}
+            <div class="form-group">
+              <input type="text" class="form-control PROGRAMMING_LANGUAGE" id="language-{{loop.index}}" aria-describedby="{{language}}" value="{{language}}">
+              <button class="btn btn form-control btn-danger remove_button" type="button">Remove</button>
+            </div>
+            <script> var language_ctr = {{loop.index}};</script>
+            {% endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_language" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- FRAMEWORK SECTION --> 
+        <div id="FRAMEWORKS">
+          <div class="container row justify-content-left align-items-left h4 border-bottom">FRAMEWORKS</div>
+          <div id="framework_div" class="container row form-inline">
+            {% for fw in resume.Frameworks %}
+            <div class="form-group">
+              <input type="text" class="form-control FRAMEWORK" id="framework-{{loop.index}}" aria-describedby="{{fw}}" value="{{fw}}">
+              <button class="btn btn form-control btn-danger remove_button" type="button">Remove</button>
+            </div>
+            <script> var framework_ctr = {{loop.index}};</script>
+            {% endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_framework" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- DATABASE SECTION --> 
+        <div id="DATABASES">
+          <div class="container row justify-content-left align-items-left h4 border-bottom">DATABASES</div>
+          <div class="containe row form-inline">
+            {% for type in resume.Database %}
+            {% set dbnum = loop.index %}
+            <div class="container row border-bottom text-white">{{type}}</div>
+            <div id="dbtype-{{dbnum}}-div" class="container row text-white form-group">
+              {% for db in resume.Database[type] %}
+              <div class="form-inline">
+                <input type="text" class="form-control dbtype{{dbnum}}" id="dbtype{{dbnum}}-{{loop.index}}" aria-describedby="{{type}}" value="{{db}}">
+                <button class="btn btn form-control btn-danger remove_button" type="button">Remove</button>
+              </div>
+              <script> var dbtype{{dbnum}}_ctr = {{loop.index}};</script>
+              {% endfor %}
+            </div>
+            <div class="text-white row container display-1">
+              <button class="btn btn-success add_dbtype-{{dbnum}}" type="button">Add</button>
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- OPERATING SYSTEMS SECTION --> 
+        <div id="OPERATING_SYSTEMS">
+          <div class="container row justify-content-left align-items-left h6 border-bottom">OPERATING SYSTEMS</div>
+          <div id="os_div" class="row container form-inline">
+            {% for os in resume['Operating Systems'] %}
+            <div class="row">
+              <input type="text" class="form-control OS" id="os-{{loop.index}}" aria-describedby="{{os}}" value="{{os}}">
+              <button class="form-control btn btn-danger remove_button" type="button">Remove</button>
+            </div>
+            <script> var os_ctr = {{loop.index}};</script>
+            {% endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_os" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- CLASS PROJECTS SECTION --> 
+        <div id="CLASS_PROJECTS">
+          <div class="container row justify-content-left align-items-left h6 border-bottom">CLASS PROJECTS</div>
+          <div id="cproj_div" class="container row form-inline border">
+            {% for proj in resume['Class Projects'] %}
+            <div class="container row">
+              <textarea class="form-control w-75 CPROJ" name="cproj-{{loop.index}}" aria-describedby="{{proj}}">{{proj}}</textarea>
+              <button class="btn form-control btn-danger remove_button" type="button">Remove</button>
+            </div>
+            <script> var cproj_ctr = {{loop.index}};</script>
+            {% endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_cproj" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- RESEARCH --> 
+        <div id="RESEARCH">
+          <div class="container row justify-content-left align-items-left h6 border-bottom">RESEARCH</div>
+          <div id="rsch_div" class="container row form-inline">
+            {% for rsch in resume.Research %}
+            <div class="container row form-group">
+              <textarea class="form-control w-75 RSCH" name="rsch-{{loop.index}}" aria-describedby="research">{{rsch}}</textarea>
+              <button class="btn form-control btn-danger remove_button" type="button">Remove</button>
+            </div>
+            <script> var rsch_ctr = {{loop.index}};</script>
+            {% endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_rsch" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- PERSONAL PROJECTS--> 
+        <div id="PERSONAL_PROJECTS">
+          <div class="container row justify-content-left align-items-left h6 border-bottom">PERSONAL PROJECTS</div>
+          <div id="pproj_div" class="container row border form-inline">
+            {% for proj in resume['Personal Projects'] %}
+            <div class="container row form-group">
+              <textarea class="form-control w-75 PPROJ" name="pproj-{{loop.index}}" aria-describedby="{{proj}}">{{proj}}</textarea>
+              <button class="btn form-control btn-danger remove_button" type="button">Remove</button>
+            </div>
+            <script> var pproj_ctr = {{loop.index}};</script>
+            {% endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_pproj" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+          <li>
+        <!-- WORK HISTORY--> 
+        <div class="container border" id="EMPLOYMENT">
+          <div class="container row justify-content-left align-items-left h6 border-bottom">WORK HISTORY</div>
+          <div id="job_div" class="container row form-inline border text-white">
+            {% for job in resume['Work Experience'] -%}
+            <div class="row form-inline border-secondary WORK_HISTORY">
+              <label class="control-label" for="job-{{loop.index}}">Employer</label>
+              <input type="text" class="form-control JOB_EMPLOYER" id="job-{{loop.index}}" aria-describedby="Employer" value="{{job.Employer}}">
+              <label class="control-label" for="from-{{loop.index}}">From</label>
+              <input type="text" class="form-control JOB_FROM" id="from-{{loop.index}}" aria-describedby="from" value="{{job.from}}">
+              <label class="control-label" for="to-{{loop.index}}">To</label>
+              <input type="text" class="form-control JOB_TO" id="to-{{loop.index}}" aria-describedby="to" value="{{job.to}}">
+              <label class="control-label" for="title-{{loop.index}}">Title</label>
+              <input type="text" class="form-control JOB_TITLE" id="title-{{loop.index}}" aria-describedby="title" value="{{job.Position}}">
+              <label class="control-label" for="duties-{{loop.index}}">Duties</label>
+              <textarea class="form-control w-75 JOB_DUTIES" name="duties-{{loop.index}}" aria-describedby="{{duties}}">{{job.Duties}}</textarea>
+              <button class="btn btn form-control form-inline btn-danger remove_button" type="button">Remove</button>
+            </div>
+            <script> var job_ctr = {{loop.index}};</script>
+            {%- endfor %}
+          </div>
+          <div class="text-white row container display-1">
+            <button class="btn btn-success add_job" type="button">Add</button>
+          </div>
+          <br>
+        </div>
+          </li>
+
+        </ul>
+    </form>
+    <div id="SAVE_CANCEL">
+      <button id="SAVE_RESUME" class="btn-lg btn-success" type="button">SAVE</button>
+    </div>
+    <br>
+    <br>
+
+
+    <!-- JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{url_for('static', filename='js/jquery-3.3.1.js')}}"></script>
+    <script src="{{url_for('static', filename='js/popper.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery-ui.js')}}"></script>
+    <!-- Add/Remove logic -->
+    <script>
+      $(document).ready(function(){
+        // all remove buttons use this
+        $(document).on("click", ".remove_button", function(){
+          $(this).parent().remove();
+        });
+
+        // add degrees
+        $('.add_degree').click(function(){
+          var degree = '<div class="container text-white border form-inline">'; 
+          degree += '<label class="control-label" for="degree-' + degree_ctr + '">Degree: </label>';
+          degree += '<input type="text" class="form-control DEGREE_DEGREE" id="degree-' + degree_ctr + '" aria-describedby="degree" value="degree">';
+          degree += '<label class="control-label" for="institution-' + degree_ctr + '">Institution: </label>';
+          degree += '<input type="text" class="form-control DEGREE_INSTITUTION" id="institution-' + degree_ctr + '" aria-describedby="institution" value="Institution">';
+          degree += '<label class="control-label" for="cgpa-' + degree_ctr + '">Cumulative GPA: </label>';
+          degree += '<input type="text" class="form-control DEGREE_GPA" id="cgpa-' + degree_ctr + '" aria-describedby="gpa" value="GPA">';
+          degree +=  '<button class="btn btn-danger row remove_button" type="button">Remove</button>';
+          degree +=  '</div>';
+          $('#degree_div').append(degree);
+          degree_ctr += 1;
+        });
+
+        $('.add_knowledge').click(function(){
+          var knowledge =  '<div class="container row">';
+          knowledge += '<input type="text" class="form-control w-75 KNOWLEDGE_SKILL" id="knowledge-' + knowledge_ctr + '" aria-describedby="knowledge" value="knowledge">';
+          knowledge += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+          $('#knowledge_div').append(knowledge);
+          knowledge_ctr += 1;
+        });
+
+        $('.add_language').click(function(){
+          var language =  '<div class="form-group container row">';
+          language += '<input type="text" class="form-control w-75 PROGRAMMING_LANGUAGE" id="language-' + language_ctr + '" aria-describedby="language" value="language">';
+          language += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+          $('#language_div').append(language);
+          language_ctr += 1;
+        });
+
+        $('.add_framework').click(function(){
+          var framework =  '<div class="form-group container row">';
+          framework += '<input type="text" class="form-control w-75 FRAMEWORK" id="framework-' + framework_ctr + '" aria-describedby="framework" value="framework">';
+          framework += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+          $('#framework_div').append(framework);
+          framework_ctr += 1;
+        });
+
+        {# create scripts to handle databse add buttons    #}
+        {% for n in resume.Database %}
+        {% set ct = loop.index  %}
+        $('.add_dbtype-{{ct}}').click(function(){
+          var dbtype =  '<div class="form-group container row">';
+          dbtype += '<input type="text" class="form-control w-75"';
+          dbtype += ' id="dbtype-{{ct}}' + dbtype{{ct}}_ctr + '" aria-describedby="dbtype" value="database type">';
+          dbtype += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+          $('#dbtype-{{ct}}-div').append(dbtype);
+          dbtype{{ct}}_ctr += 1;
+        });
+        {% endfor %}
+
+        $('.add_os').click(function(){
+          var os =  '<div class="form-group container row">';
+          os += '<input type="text" class="form-control w-75" id="os-' + os_ctr + '" aria-describedby="os" value="operating system">';
+          os += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+          $('#os_div').append(os);
+          os_ctr += 1;
+        });
+
+        $('.add_cproj').click(function(){
+          var cproj =  '<div class="form-group container row">';
+          cproj += '<input type="text" class="form-control w-75" id="cproj-' + cproj_ctr + '" aria-describedby="cproj" value="class project">';
+          cproj += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+          $('#cproj_div').append(cproj);
+          cproj_ctr += 1;
+        });
+
+        $('.add_rsch').click(function(){
+          var rsch =  '<div class="form-group container row">';
+          rsch += '<input type="text" class="form-control w-75" id="rsch-' + rsch_ctr + '" aria-describedby="rsch" value="class project">';
+          rsch += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+          $('#rsch_div').append(rsch);
+          rsch_ctr += 1;
+        });
+
+        $('.add_pproj').click(function(){
+          var pproj =  '<div class="form-group container row">';
+          pproj += '<input type="text" class="form-control w-75" id="pproj-' + pproj_ctr + '" aria-describedby="pproj" value="class project">';
+          pproj += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+          $('#pproj_div').append(pproj);
+          pproj_ctr += 1;
+        });
+
+        $('.add_job').click(function(){
+          var job = '<div class="row form-inline border-secondary">';
+          job += '<label class="control-label" for="job-' + job_ctr + '">Employer</label>';
+          job += '<input type="text" class="form-control" id="job-' + job_ctr + '" aria-describedby="Employer" value="Employer">';
+          job += '<label class="control-label" for="from-' + job_ctr + '">From</label>';
+          job += '     <input type="text" class="form-control" id="from-' + job_ctr + '" aria-describedby="from" value="start date">';
+          job += '<label class="control-label" for="to-' + job_ctr + '">To</label>';
+          job += '<input type="text" class="form-control" id="to-' + job_ctr + '" aria-describedby="to" value="end date">';
+          job += '<label class="control-label" for="title-' + job_ctr + '">Title</label>';
+          job += '<input type="text" class="form-control" id="title-' + job_ctr + '" aria-describedby="title" value="Title">';
+          job += '<label class="control-label" for="duties-' + job_ctr + '">Duties</label>';
+          job += '<textarea class="form-control w-75" name="duties-' + job_ctr + '" aria-describedby="duties">job duties</textarea>';
+          job += '<button class="btn btn form-control form-inline btn-danger remove_button" type="button">Remove</button>';
+          job += '</div>';
+          $('#job_div').append(job);
+          job_ctr += 1;
+        });
+
+        $('#SAVE_RESUME').click(function(){
+          var resume_JSON = {};
+          resume_JSON.name = $('#name').val();
+          resume_JSON.location = $('#location').val();
+          resume_JSON.email = $('#email').val();
+          resume_JSON.website = $('#website').val();
+          resume_JSON.github = $('#github').val();
+          resume_JSON.linkedin = $('#linkedin').val();
+          resume_JSON.Education = [];
+
+          //add degrees
+          $('.DEGREE').each(function(){
+            var deg = {};
+            deg.degree = $(this).find('.DEGREE_DEGREE').val();
+            deg.Institution = $(this).find('.DEGREE_INSTITUTION').val();
+            deg['Cumulative GPA'] = $(this).find('.DEGREE_GPA').val();
+            resume_JSON.Education.push(deg);
+          });
+
+          //add knowledge 
+          resume_JSON.Knowledge = [];
+          $('.KNOWLEDGE_SKILL').each(function(){
+            resume_JSON.Knowledge.push($(this).val());
+          });
+
+          //add Programming Languages 
+          resume_JSON['Programming Languages'] = [];
+          $('.PROGRAMMING_LANGUAGE').each(function(){
+            resume_JSON['Programming Languages'].push($(this).val());
+          });
+
+          //add Frameworks 
+          resume_JSON['Frameworks'] = [];
+          $('.FRAMEWORK').each(function(){
+            resume_JSON['Frameworks'].push($(this).val());
+          });
+
+          //add Databases 
+          resume_JSON['Database'] = {};
+          {% for type in resume.Database %}
+          {% set dbnum = loop.index %}
+          resume_JSON['Database']['{{type}}'] = [];
+          $('.dbtype{{dbnum}}').each(function(){
+            resume_JSON['Database']['{{type}}'].push($(this).val());
+          });
+          {% endfor %}
+
+          //add Operating Systems 
+          resume_JSON['Operating Systems'] = [];
+          $('.OS').each(function(){
+            resume_JSON['Operating Systems'].push($(this).val());
+          });
+
+          //add Class Projects 
+          resume_JSON['Class Projects'] = [];
+          $('.CPROJ').each(function(){
+            resume_JSON['Class Projects'].push($(this).val());
+          });
+
+          //add Research 
+          resume_JSON.Research = [];
+          $('.RSCH').each(function(){
+            resume_JSON.Research.push($(this).val());
+          });
+
+          //add Personal Projects 
+          resume_JSON['Personal Projects'] = [];
+          $('.PPROJ').each(function(){
+            resume_JSON['Personal Projects'].push($(this).val());
+          });
+
+          //add work history 
+          resume_JSON['Work Experience'] = [];
+          $('.WORK_HISTORY').each(function(){
+            var job = {};
+            job.Employer = $(this).find('.JOB_EMPLOYER').val();
+            job.from= $(this).find('.JOB_FROM').val();
+            job.to = $(this).find('.JOB_FROM').val();
+            job.Position = $(this).find('.JOB_TITLE').val();
+            job.Duties = $(this).find('.JOB_DUTIES').val();
+            resume_JSON['Work Experience'].push(job);
+          });
+          //console.log(JSON.stringify(resume_JSON, null, 2));
+          var editing_page = $("#EDIT").html();
+          //$('#EDIT').html('hungry');
+
+          $.ajax({
+              type: 'POST',
+              // Provide correct Content-Type, so that Flask will know how to process it.
+              contentType: 'application/json',
+              // Encode your data as JSON.
+              data: JSON.stringify(resume_JSON),
+              // This is the type of data you're expecting back from the server.
+              dataType: 'html',
+              url: 'preview',
+              success: function (e) {
+                      $('#EDIT').html(e)
+                      console.log(e);
+                  }
+          });
+
+
+          //console.log(editing_page);
+        });//end #SAVE_RESUME
+
+      });
+
+    </script>
+    <script>$("#sortable").sortable();</script>
+  </body>
+</html>

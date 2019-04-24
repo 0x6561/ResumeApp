@@ -1,0 +1,37 @@
+{
+  "name" : "Edgar Aguiniga",
+  "location" : "Phoenix Arizona",
+  "phone" : "480-363-3928",
+  "email" : "edgar.ea6561@gmail.com", 
+  "website" : "www.0x6561.net",
+  "github" : "github.com/0x6561",
+  "linkedin" : "www.linkedin.com/in/EdgarSoftwareEngineer",
+  "Education" : [
+    {"degree" : "Bachelor of Science BS in Applied Computing", 
+      "Institution" : "Arizona State University", 
+      "Cumulative GPA" : "3.27", 
+      "Major GPA" : "3.48"},
+      {"degree" : "Associate of Business ABUS", 
+        "Institution" : "Arizona Western College"}],
+        "Knowledge" : ["Structured Programming","Object Oriented Design (OOD)","Object Oriented Programming (OOP)",
+          "Data Structures","Algorithms","TCP/IP Networking","Socket Programming","Java Cryptography Extension (JCE)"],
+"Programming Languages" : ["Java","Python","JavaScript","Bash","Sed","AWK","Regex",
+"SQL","LINQ","PHP","Android development (Android Studio)","C","C#"],
+"Frameworks" : ["Apache Tomcat", "Java EE", "Flask", "JQuery", "Bootstrap","Jinja"],
+"Database" :
+{"Structured Query Language (SQL)" :
+["Oracle","Microsoft SQL Server","MySQL","MariaDB","Sqlite"],
+"NoSQL" :
+["Hadoop (Map/Reduce)","HBase","MongoDB"],
+"Object Relational Mapping ORM" :
+["LINQ"]},
+"Frameworks" : ["jquery","Chart.js", "bootstrap", "J2EE / Java EE", "Spring Boot", "Flask"],
+"Operating Systems" : ["Linux","Windows","MacOS","UNIX"],
+"Class Projects" : ["Created a test suite which implemented and evaluated the performance of several sorting algorithms using a variety of input data.","Using HBase as the data store, implemented a messaging system in Java which allows users to send messages to other users. The system includes a graphical user interface, which allows users to send and read messages.","Created a multithreaded messaging application which sends messages encrypted with AES, relying on the Diffie-Helman Algorithm for key exchange."],
+"Research" : ["Fall 2016 to Spring 2017  Under the supervision of a professor conducted research on wireless mesh networks, constructed a self-assembling wireless mesh network composed of Raspberry Pi computers. The test network was capable of providing network access to client devices via 802.11 WiFi. Presented results at NCUIRE Symposium 2017."],
+"Personal Projects" : ["Designed and programmed a password manager in Java, features include a Swing GUI, encrypted storage, a secure password generator, and inactivity timeout function.","Developed an encrypted chat program with GUI.","Designed and implemented a program which does market research to determine demand for skills in Phoenix, has a Python backend and a JavaScript frontend to render charts."],
+"Work Experience" : [
+  {"Employer" : "Vangent Inc", "from" : "2/2005", "to" : "12/2008",
+"Position" : "Information Specialist II",
+"Duties" : "Resolved Customer inquiries,  adhered to HIPPA and the Privacy Act"}]
+}

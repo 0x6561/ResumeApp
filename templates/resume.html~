@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+
+    <title>{{resume.name}} - Resume</title>
+  </head>
+  <body>
+    <div class="container-fluid h-100 w-75">
+
+      <div class="row justify-content-center align-items-center h1">{{resume.name}}</div>
+      <div class="h4 row align-items-center justify-content-center container">
+        {{resume.location}}
+      </div>
+      <div class="row justify-content-center align-items-center h4">
+        <div class="col"><a href="{{resume.email}}">{{resume.email}}</a></div>
+        <div class="col"><a href="{{resume.website }}">{{resume.website}}</a></div>
+        <div class="col"><a href="{{resume.github}}">{{resume.github}}</a></div>
+        <div class="col"><a href="{{resume.linkedin}}">{{resume.linkedin}}</a></div>
+      </div>
+      <br>
+
+      <!-- EDUCATION SECTION --> 
+      <div class="container row justify-content-left align-items-left h3 border-bottom">Education</div>
+      <!-- DEGREE SECTION --> 
+      {% for degree in resume.Education %}
+      <div class="row text-white">{{degree.degree}} - {{degree.Institution}}</div>
+      {% if degree['Cumulative GPA'] is defined %}
+      <div class="row"><li>Cumulative GPA:{{degree['Cumulative GPA']}} Major GPA:{{degree['Major GPA']}}</li></div>
+      {% endif %}
+      {% endfor %}
+      <br>
+
+      <!-- KNOWLEDGE SECTION --> 
+      <div class="row justify-content-left align-items-left h4 border-bottom">KNOWLEDGE</div>
+      <div class="container row">
+        {% for wisdom in resume.Knowledge %}
+        <div class="text-white col-3">{{wisdom}}</div>
+        {% endfor %}
+      </div>
+      <br>
+
+      <!-- PROGRAMMING LANGUAGES SECTION --> 
+      <div class="row justify-content-left align-items-left h4 border-bottom">PROGRAMMING LANGUAGES</div>
+      <div class="container row">
+        {% for language in resume['Programming Languages'] %}
+        <div class="text-white col-3">{{language}}</div>
+        {% endfor %}
+      </div>
+      <br>
+
+      <!-- FRAMEWORK SECTION --> 
+      <div class="row justify-content-left align-items-left h4 border-bottom">FRAMEWORKS</div>
+      <div class="container row">
+        {% for fw in resume.Frameworks %}
+        <div class="text-white col-3">{{fw}}</div>
+        {% endfor %}
+      </div>
+      <br>
+
+      <!-- DATABASE SECTION --> 
+      <div class="row justify-content-left align-items-left h4 border-bottom">DATABASES</div>
+      <div class="container">
+        {% for type in resume.Database %}
+        <div class="row border-bottom text-white">{{type}}</div>
+        <div class="container row text-white">
+          {% for db in resume.Database[type]%}
+          <div class="col-3 row text-white"><li>{{db}}</li></div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+      <br>
+
+      <!-- OPERATING SYSTEMS SECTION --> 
+      <div class="container row justify-content-left align-items-left h6 border-bottom">OPERATING SYSTEMS</div>
+      <div class="row container">
+        {% for os in resume['Operating Systems'] %}
+        <div class="col-3 row text-white">{{os}}</div>
+        {% endfor %}
+      </div>
+      <br>
+
+      <!-- CLASS PROJECTS SECTION --> 
+      <div class="container row justify-content-left align-items-left h6 border-bottom">CLASS PROJECTS</div>
+      {% for proj in resume['Class Projects'] %}
+      <div class="row text-white"><li>{{proj}}</li></div>
+      {% endfor %}
+      <br>
+
+      <!-- RESEARCH --> 
+      <div class="container row justify-content-left align-items-left h6 border-bottom">RESEARCH</div>
+      {% for rsch in resume.Research %}
+      <div class="col text-white"><p>{{rsch}}</div>
+      {% endfor %}
+      <br>
+
+      <!-- PERSONAL PROJECTS--> 
+      <div class="container row justify-content-left align-items-left h6 border-bottom">PERSONAL PROJECTS</div>
+      {% for proj in resume['Personal Projects'] %}
+      <div class="row text-white"><li>{{proj}}</li></div>
+      {% endfor %}
+      <br>
+
+      <!-- WORK HISTORY--> 
+      <div class="container row justify-content-left align-items-left h6 border-bottom">WORK HISTORY</div>
+      {% for job in resume['Work Experience'] %}
+      <div class="col text-white">Employer: {{job.Employer}}</div> 
+      <div class="col text-white">from: {{job.from}} to: {{job.to}}</div>
+      <div class="col text-white">Title: {{job.Position}}</div>
+      <div class="col text-white">Duties: {{job.Duties}}</div>
+      {% endfor %}
+    </div>
+    <br>
+
+
+    <!-- JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{url_for('static', filename='js/jquery-3.3.1.js')}}"></script>
+    <script src="{{url_for('static', filename='js/popper.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+  </body>
+</html>

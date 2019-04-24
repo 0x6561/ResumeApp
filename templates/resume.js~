@@ -1,0 +1,330 @@
+//<!--     DISPLAY RESUME    -->
+$(document).ready(function(){
+  $.ajax({
+    type: 'GET',
+    // This is the type of data you're expecting back from the server.
+    dataType: 'json',
+    url: 'get',
+    success: function (resume_json) {
+      console.log('sucess!');
+      display_resume(resume_json);
+    }
+  });
+
+<!--     DISPLAY RESUME -->
+  function display_resume(resume){
+    $('#name').html(resume.name);
+    $('#location').html(resume.location);
+    if('email' in resume) $('#email').html('<a href="'+resume.email + '">' + resume.email + '</a>');
+    if('website' in resume) $('#website').html('<a href="'+resume.website + '">' + resume.website + '</a>');
+    if('github' in resume) $('#github').html('<a href="'+resume.github + '">' + resume.github + '</a>');
+    if('linkedin' in resume) $('#linkedin').html('<a href="'+resume.linkedin + '">' + resume.linkedin + '</a>');
+
+    //EDUCATION
+    $.each(resume.Education, function(index, degree){
+      $('#EDUCATION').append('<div class="row text-white">' + degree.degree + ' - ' + degree.Institution + '</div>');
+      if(['Cumulative GPA'] in degree )$('#EDUCATION').append('<div class="row"><li>Cumulative GPA: ' + degree['Cumulative GPA'] + '</li></div>');
+    });
+
+    //KNOWLEDGE
+    $.each(resume.Knowledge, function(index, knowledge){
+      $('#KNOWLEDGE').append('<div class="text-white col">' + knowledge + '</div>');
+    });
+
+    //Programming Languages
+    $.each(resume['Programming Languages'], function(index, language){
+      $('#LANGUAGES').append('<div class="text-white col">' + language + '</div>');
+    });
+
+    //Frameworks
+    $.each(resume.Frameworks, function(index, framework){
+      $('#FRAMEWORKS').append('<div class="text-white col">' + framework + '</div>');
+    });
+
+    //Database
+    $.each(resume.Database, function(index, dbtype){
+      var index_class = index.replace(/[(){}]/g,'');
+      index_class = index_class.replace(/ /g,'__');
+      var dbkind = '<div class="container DB-TYPE"><div class="container row border-bottom h6 text-white DB-TYPE-TITLE">' + index + '</div>';
+      dbkind += '<div id="' + index_class + '" class="container row border-info text-white"></div></div><br>';
+      $('#DATABASE').append(dbkind);
+      $.each(resume.Database[index], function(index, db){
+        var dbase = '<div class="col text-white DB-TYPE-INSTANCE">' + db + '</div>';
+        $('#'+index_class).append(dbase);
+      });
+    });
+
+
+    //Operating Systems
+    $.each(resume['Operating Systems'], function(index, os){
+      $('#OS').append('<div class="text-white col">' + os + '</div>');
+    });
+
+    //Class Projects
+    $.each(resume['Class Projects'], function(index, cproj){
+      $('#CPROJ').append('<div class="row text-white"><li>' + cproj + '</li></div>');
+    });
+
+    //Research
+    $.each(resume['Research'], function(index, rsch){
+      $('#RSCH').append('<div class="row text-white"><li>' + rsch + '</li></div>');
+    });
+
+    //Personal Projects
+    $.each(resume['Personal Projects'], function(index, pproj){
+      $('#PPROJ').append('<div class="row text-white"><li>' + pproj + '</li></div>');
+    });
+
+    //WORK HISTORY
+    $.each(resume['Work Experience'], function(index, job){
+      var position = '<div class="row container">';
+      position += '<div class="w-25">';
+      position += '<div class="container row text-white">Employer: ' + job.Employer + '</div>';
+      position += '<div class="container row text-white">Title: ' + job.Position + '</div>';
+      position += '<div class="container row text-white">from: ' + job.from + '  to: ' + job.to + '</div>';
+      position += '</div>';
+      position += '<div class="w-75">';
+      position += '<div class="container row text-white">Duties: <br>' + job.Duties + '</div>';
+      position += '</div>';
+      position += '</div>';
+      $('#WORK').append(position);
+    });
+
+  }//close display_resume
+
+<!--     ADD EDIT LOGIC  -->
+  // all remove buttons use this
+   $(document).on("click", ".remove_button", function(){
+    $(this).parent().remove();
+   });
+
+  var name_fld = '<label class="control-label" for="name">Name</label>';
+  += '<input type="text" class="form-control" id="NAME" aria-describedby="name" value="' + resume.name + '">';
+  $('#NAME_DIV').append(name_fld);
+
+  var location_fld = '<label class="control-label" for="location">Location</label>';
+  location_fld += '<input type="text" class="form-control" id="location" aria-describedby="name" value="' + resume.location + '">';
+  $('#NAME_DIV').append(name_fld);
+
+  // add degrees
+  var degree_ctr = 0;
+  function add_degree(deg={degree:'degree',Institution: "institution",GPA:"GPA"}){
+    var degree = '<div class="container text-white border form-inline">'; 
+    degree += '<label class="control-label" for="degree-' + degree_ctr + '">Degree: </label>';
+    degree += '<input type="text" class="form-control DEGREE_DEGREE" id="degree-' + degree_ctr + '" aria-describedby="degree" value="' + deg.dgree + '">';
+    degree += '<label class="control-label" for="institution-' + degree_ctr + '">Institution: </label>';
+    degree += '<input type="text" class="form-control DEGREE_INSTITUTION" id="institution-' + degree_ctr + '" aria-describedby="institution" value="' + deg.Institution + '">';
+    degree += '<label class="control-label" for="cgpa-' + degree_ctr + '">Cumulative GPA: </label>';
+    degree += '<input type="text" class="form-control DEGREE_GPA" id="cgpa-' + degree_ctr + '" aria-describedby="gpa" value="' + deg.GPA + '">';
+    degree +=  '<button class="btn btn-danger row remove_button" type="button">Remove</button>';
+    degree +=  '</div>';
+    $('#degree_div').append(degree);
+    degree_ctr += 1;
+  }
+
+  // add knowledge
+  var knowledge_ctr = 0;
+  function add_knowledge(knowledge = 'knowledge'){
+    var knowledge =  '<div class="container row">';
+    knowledge += '<input type="text" class="form-control w-75 KNOWLEDGE_SKILL" id="knowledge-' + knowledge_ctr + '" aria-describedby="knowledge" value="' + knowledge + '">';
+    knowledge += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#knowledge_div').append(knowledge);
+    knowledge_ctr += 1;
+  }
+
+  //add language
+  var language_ctr = 0;
+  function add_language(lang='language'){
+    var language =  '<div class="form-group container row">';
+    language += '<input type="text" class="form-control w-75 PROGRAMMING_LANGUAGE" id="language-' + language_ctr + '" aria-describedby="language" value="' + lang + '">';
+    language += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#language_div').append(language);
+    language_ctr += 1;
+  }
+
+  //add framework
+  var framework_ctr = 0;
+  function add_framework(framework = 'framework'){
+    var framework =  '<div class="form-group container row">';
+    framework += '<input type="text" class="form-control w-75 FRAMEWORK" id="framework-' + framework_ctr + '" aria-describedby="framework" value="' + framework + '">';
+    framework += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#framework_div').append(framework);
+    framework_ctr += 1;
+  }
+
+  // add field
+  var ctr = 0;
+  function add_field(destination, fieldvalue, classname){
+    var fld  =  '<div class="form-group container row">';
+    fld  += '<input type="text" class="form-control' + classname + '" id="' + classname + ctr + '" aria-describedby="' + classname + '" value="' + fieldvalue + '">';
+    fld  += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#'+ destination).append(fld);
+    ctr += 1;
+  }
+
+  //add databases
+  function add_dbtype(){
+    var dbtype =  '<div class="form-group container row">';
+    dbtype += '<input type="text" class="form-control w-75"';
+    dbtype += ' id="dbtype-{{ct}}' + dbtype{{ct}}_ctr + '" aria-describedby="dbtype" value="database type">';
+    dbtype += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#dbtype-{{ct}}-div').append(dbtype);
+    dbtype{{ct}}_ctr += 1;
+  }
+
+  //
+  $('.add_os').click(function(){
+    var os =  '<div class="form-group container row">';
+    os += '<input type="text" class="form-control w-75" id="os-' + os_ctr + '" aria-describedby="os" value="operating system">';
+    os += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#os_div').append(os);
+    os_ctr += 1;
+  });
+
+  $('.add_cproj').click(function(){
+    var cproj =  '<div class="form-group container row">';
+    cproj += '<input type="text" class="form-control w-75" id="cproj-' + cproj_ctr + '" aria-describedby="cproj" value="class project">';
+    cproj += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#cproj_div').append(cproj);
+    cproj_ctr += 1;
+  });
+
+  $('.add_rsch').click(function(){
+    var rsch =  '<div class="form-group container row">';
+    rsch += '<input type="text" class="form-control w-75" id="rsch-' + rsch_ctr + '" aria-describedby="rsch" value="class project">';
+    rsch += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#rsch_div').append(rsch);
+    rsch_ctr += 1;
+  });
+
+  $('.add_pproj').click(function(){
+    var pproj =  '<div class="form-group container row">';
+    pproj += '<input type="text" class="form-control w-75" id="pproj-' + pproj_ctr + '" aria-describedby="pproj" value="class project">';
+    pproj += '<button class="btn form-control btn-danger remove_button" type="button">Remove</button></div>';
+    $('#pproj_div').append(pproj);
+    pproj_ctr += 1;
+  });
+
+  $('.add_job').click(function(){
+    var job = '<div class="row form-inline border-secondary">';
+    job += '<label class="control-label" for="job-' + job_ctr + '">Employer</label>';
+    job += '<input type="text" class="form-control" id="job-' + job_ctr + '" aria-describedby="Employer" value="Employer">';
+    job += '<label class="control-label" for="from-' + job_ctr + '">From</label>';
+    job += '     <input type="text" class="form-control" id="from-' + job_ctr + '" aria-describedby="from" value="start date">';
+    job += '<label class="control-label" for="to-' + job_ctr + '">To</label>';
+    job += '<input type="text" class="form-control" id="to-' + job_ctr + '" aria-describedby="to" value="end date">';
+    job += '<label class="control-label" for="title-' + job_ctr + '">Title</label>';
+    job += '<input type="text" class="form-control" id="title-' + job_ctr + '" aria-describedby="title" value="Title">';
+    job += '<label class="control-label" for="duties-' + job_ctr + '">Duties</label>';
+    job += '<textarea class="form-control w-75" name="duties-' + job_ctr + '" aria-describedby="duties">job duties</textarea>';
+    job += '<button class="btn btn form-control form-inline btn-danger remove_button" type="button">Remove</button>';
+    job += '</div>';
+    $('#job_div').append(job);
+    job_ctr += 1;
+  });
+
+  $('#SAVE_RESUME').click(function(){
+    var resume_JSON = {};
+    resume_JSON.name = $('#name').val();
+    resume_JSON.location = $('#location').val();
+    resume_JSON.email = $('#email').val();
+    resume_JSON.website = $('#website').val();
+    resume_JSON.github = $('#github').val();
+    resume_JSON.linkedin = $('#linkedin').val();
+    resume_JSON.Education = [];
+
+    //add degrees
+    $('.DEGREE').each(function(){
+      var deg = {};
+      deg.degree = $(this).find('.DEGREE_DEGREE').val();
+      deg.Institution = $(this).find('.DEGREE_INSTITUTION').val();
+      deg['Cumulative GPA'] = $(this).find('.DEGREE_GPA').val();
+      resume_JSON.Education.push(deg);
+    });
+
+    //add knowledge 
+    resume_JSON.Knowledge = [];
+    $('.KNOWLEDGE_SKILL').each(function(){
+      resume_JSON.Knowledge.push($(this).val());
+    });
+
+    //add Programming Languages 
+    resume_JSON['Programming Languages'] = [];
+    $('.PROGRAMMING_LANGUAGE').each(function(){
+      resume_JSON['Programming Languages'].push($(this).val());
+    });
+
+    //add Frameworks 
+    resume_JSON['Frameworks'] = [];
+    $('.FRAMEWORK').each(function(){
+      resume_JSON['Frameworks'].push($(this).val());
+    });
+
+    //add Databases 
+    resume_JSON['Database'] = {};
+    {% for type in resume.Database %}
+    {% set dbnum = loop.index %}
+    resume_JSON['Database']['{{type}}'] = [];
+    $('.dbtype{{dbnum}}').each(function(){
+      resume_JSON['Database']['{{type}}'].push($(this).val());
+    });
+    {% endfor %}
+
+    //add Operating Systems 
+    resume_JSON['Operating Systems'] = [];
+    $('.OS').each(function(){
+      resume_JSON['Operating Systems'].push($(this).val());
+    });
+
+    //add Class Projects 
+    resume_JSON['Class Projects'] = [];
+    $('.CPROJ').each(function(){
+      resume_JSON['Class Projects'].push($(this).val());
+    });
+
+    //add Research 
+    resume_JSON.Research = [];
+    $('.RSCH').each(function(){
+      resume_JSON.Research.push($(this).val());
+    });
+
+    //add Personal Projects 
+    resume_JSON['Personal Projects'] = [];
+    $('.PPROJ').each(function(){
+      resume_JSON['Personal Projects'].push($(this).val());
+    });
+
+    //add work history 
+    resume_JSON['Work Experience'] = [];
+    $('.WORK_HISTORY').each(function(){
+      var job = {};
+      job.Employer = $(this).find('.JOB_EMPLOYER').val();
+      job.from= $(this).find('.JOB_FROM').val();
+      job.to = $(this).find('.JOB_FROM').val();
+      job.Position = $(this).find('.JOB_TITLE').val();
+      job.Duties = $(this).find('.JOB_DUTIES').val();
+      resume_JSON['Work Experience'].push(job);
+    });
+    //console.log(JSON.stringify(resume_JSON, null, 2));
+    var editing_page = $("#EDIT").html();
+    //$('#EDIT').html('hungry');
+
+    $.ajax({
+      type: 'POST',
+      // Provide correct Content-Type, so that Flask will know how to process it.
+      contentType: 'application/json',
+      // Encode your data as JSON.
+      data: JSON.stringify(resume_JSON),
+      // This is the type of data you're expecting back from the server.
+      dataType: 'html',
+      url: 'preview',
+      success: function (e) {
+        $('#EDIT').html(e)
+        console.log(e);
+      }
+    });
+
+    //console.log(editing_page);
+  });//end #SAVE_RESUME
+
+});//close jquery
