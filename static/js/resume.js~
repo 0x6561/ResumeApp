@@ -14,31 +14,34 @@ $(document).ready(function(){
 });
 
 //<!--     DISPLAY RESUME -->
-function display_resume(resume){
-  $('#NAME_DIV').html(resume.name); $('#LOCATION_DIV').html(resume.location); if('EMAIL_DIV' in resume) $('#email').html('<a href="'+resume.email + '">' + resume.email + '</a>');
-  if('WEBSITE_DIV' in resume) $('#website').html('<a href="'+resume.website + '">' + resume.website + '</a>');
-  if('GITHUB_DIV' in resume) $('#github').html('<a href="'+resume.github + '">' + resume.github + '</a>');
-  if('LINKEDIN_DIV' in resume) $('#linkedin').html('<a href="'+resume.linkedin + '">' + resume.linkedin + '</a>');
+function display_resume(resume, preview=false){
+  clear_resume();
+  $('#NAME_DIV').html(resume.name); 
+  $('#LOCATION_DIV').html(resume.location);
+  if('email' in resume) $('#EMAIL_DIV').html('<a href="mailto:' + resume.email+ '">' + resume.email+ '</a>');
+  if('website' in resume) $('#WEBSITE_DIV').html('<a href="'+resume.website + '">' + resume.website + '</a>');
+  if('github' in resume) $('#GITHUB_DIV').html('<a href="'+resume.github + '">' + resume.github + '</a>');
+  if('linkedin' in resume) $('#LINKEDIN_DIV').html('<a href="'+resume.linkedin + '">' + resume.linkedin + '</a>');
 
   //EDUCATION
   $.each(resume.Education, function(index, degree){
-    $('#EDUCATION_DIV').prepend('<div class="row text-white">' + degree.degree + ' - ' + degree.Institution + '</div>');
-    if(['Cumulative GPA'] in degree )$('#EDUCATION_DIV').prepend('<div class="row"><li>Cumulative GPA: ' + degree['Cumulative GPA'] + '</li></div>');
+    $('#EDUCATION_DIV').append('<div class="row text-white">' + degree.degree + ' - ' + degree.Institution + '</div>');
+    if((['Cumulative GPA'] in degree )&&( degree['Cumulative GPA'] != 'undefined'))$('#EDUCATION_DIV').append('<div class="row"><li>Cumulative GPA: ' + degree['Cumulative GPA'] + '</li></div>');
   });
 
   //KNOWLEDGE
   $.each(resume.Knowledge, function(index, knowledge){
-    $('#KNOWLEDGE_DIV').prepend('<div class="text-white col">' + knowledge + '</div>');
+    $('#KNOWLEDGE_DIV').append('<div class="text-white col">' + knowledge + '</div>');
   });
 
   //Programming Languages
   $.each(resume['Programming Languages'], function(index, language){
-    $('#LANGUAGES_DIV').prepend('<div class="text-white col">' + language + '</div>');
+    $('#LANGUAGES_DIV').append('<div class="text-white col">' + language + '</div>');
   });
 
   //Frameworks
   $.each(resume.Frameworks, function(index, framework){
-    $('#FRAMEWORKS_DIV').prepend('<div class="text-white col">' + framework + '</div>');
+    $('#FRAMEWORKS_DIV').append('<div class="text-white col">' + framework + '</div>');
   });
 
   //Database
@@ -47,31 +50,31 @@ function display_resume(resume){
     index_class = index_class.replace(/ /g,'__');//replace spaces with underscores
     var dbkind = '<div class="container DB-TYPE"><div class="container row border-bottom h6 text-white DB-TYPE-TITLE">' + index + '</div>';
     dbkind += '<div id="' + index_class + '" class="container row border-info text-white"></div><br id="foo"></div>';
-    $('#DATABASE_DIV').prepend(dbkind);
+    $('#DATABASE_DIV').append(dbkind);
     $.each(resume.Database[index], function(index, db){
       var dbase = '<div class="col text-white DB-TYPE-INSTANCE">' + db + '</div>';
-      $('#'+index_class).prepend(dbase);
+      $('#'+index_class).append(dbase);
     });
   });
 
   //Operating Systems
   $.each(resume['Operating Systems'], function(index, os){
-    $('#OS_DIV').prepend('<div class="text-white col">' + os + '</div>');
+    $('#OS_DIV').append('<div class="text-white col">' + os + '</div>');
   });
 
   //Class Projects
   $.each(resume['Class Projects'], function(index, cproj){
-    $('#CPROJ_DIV').prepend('<div class="row text-white"><li>' + cproj + '</li></div>');
+    $('#CPROJ_DIV').append('<div class="row text-white"><li>' + cproj + '</li></div>');
   });
 
   //Research
   $.each(resume['Research'], function(index, rsch){
-    $('#RSCH_DIV').prepend('<div class="row text-white"><li>' + rsch + '</li></div>');
+    $('#RSCH_DIV').append('<div class="row text-white"><li>' + rsch + '</li></div>');
   });
 
   //Personal Projects
   $.each(resume['Personal Projects'], function(index, pproj){
-    $('#PPROJ_DIV').prepend('<div class="row text-white"><li>' + pproj + '</li></div>');
+    $('#PPROJ_DIV').append('<div class="row text-white"><li>' + pproj + '</li></div>');
   });
 
   //WORK HISTORY
@@ -86,7 +89,7 @@ function display_resume(resume){
     position += '<div class="container row text-white">Duties: <br>' + job.Duties + '</div>';
     position += '</div>';
     position += '</div>';
-    $('#WORK_DIV').prepend(position);
+    $('#WORK_DIV').append(position);
   });
 
 }//close display_resume
@@ -97,6 +100,9 @@ function clear_resume(){
   $(".FLD").each(function(){
     $(this).empty();
   });
+  $(".E_BTN").each(function(){
+    $(this).remove();
+  });
 }
 
 //<!--     ADD EDIT LOGIC  -->
@@ -106,17 +112,17 @@ $(document).on("click", ".remove_button", function(){
 });
 
 function add_edit_btns(){
-  $('#EDUCATION_SECTION_DIV').append('<div id="EDUCATION_DIV_BTN" class="row"><button class="btn btn-success" type="button" onclick="add_degree()">Add</button></div>');
-  $('#KNOWLEDGE_SECTION_DIV').append('<div id="KNOWLEDGE_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_knowledge()">Add</button></div>');
-  $('#PROGRAMMING_LANGUAGE_DIV').append('<div id="LANGUAGES_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_language()">Add</button></div>');
-  $('#FRAMEWORKS_SECTION_DIV').append('<div id="FRAMEWORKS_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_framework()">Add</button></div>');
-  $('#DATABASES_SECTION_DIV').append('<div id="DATABASE_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_db_type()">Add Database Type</button></div>');
-  $('#OPERATING_SYSTEMS_DIV').append('<div id="OS_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_os()">Add</button></div>');
-  $('#CLASS_PROJECTS_DIV').append('<div id="CPROJ_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_cproj()">Add</button></div>');
-  $('#RESEARCH_DIV').append('<div id="RSCH_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_rsch()">Add</button></div>');
-  $('#PPROJ_SECTION_DIV').append('<div id="PPROJ_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_pproj()">Add</button></div>');
-  $('#EMPLOYMENT_DIV').append('<div id="WORK_DIV_BTN" class="container row"><button class="btn btn-success" type="button" onclick="add_job()">Add</button></div>');
-  $('#END').append('<div id="SAVE_DIV_BTN" class="container row"><button class="btn-lg btn-success" type="button" onclick="save()">SAVE RESUME</button></div>');
+  $('#EDUCATION_SECTION_DIV').append('<div id="EDUCATION_DIV_BTN" class="row E_BTN"><button class="btn btn-success" type="button" onclick="add_degree()">Add Degree</button></div>');
+  $('#KNOWLEDGE_SECTION_DIV').append('<div id="KNOWLEDGE_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_knowledge()">Add Knowledge</button></div>');
+  $('#PROGRAMMING_LANGUAGE_DIV').append('<div id="LANGUAGES_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_language()">Add Programming Languages</button></div>');
+  $('#FRAMEWORKS_SECTION_DIV').append('<div id="FRAMEWORKS_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_framework()">Add Frameworks</button></div>');
+  $('#DATABASES_SECTION_DIV').append('<div id="DATABASE_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_db_type()">Add Database Type</button></div>');
+  $('#OPERATING_SYSTEMS_DIV').append('<div id="OS_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_os()">Add Operating Systems</button></div>');
+  $('#CLASS_PROJECTS_DIV').append('<div id="CPROJ_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_cproj()">Add Class Project</button></div>');
+  $('#RESEARCH_DIV').append('<div id="RSCH_DIV_BTN EDIT_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_rsch()">Add Research</button></div>');
+  $('#PPROJ_SECTION_DIV').append('<div id="PPROJ_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_pproj()">Add Personal Project</button></div>');
+  $('#EMPLOYMENT_DIV').append('<div id="WORK_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_job()">Add Job</button></div>');
+  $('#END').append('<div id="PREVIEW_DIV_BTN" class="container row E_BTN"><button class="btn-lg btn-success" type="button" onclick="save()">PREVIEW RESUME</button></div>');
 }
 
 function add_edit_flds(resume={}){
@@ -170,6 +176,7 @@ clear_resume();
 }
 
 function add_top_section(resume = {'name': 'Name', 'location': 'Location', 'email': 'email', 'website': 'Website', 'github': 'GitHub', 'linkedin': 'Linkedin'}){
+  $('#TOP_DIV').html("Date Modified: " + resume.date_modified);
   var name_fld = '<div class="form-inline"><label class="control-label" for="name">Name</label>';
   name_fld += '<input type="text" class="form-control" id="NAME" aria-describedby="name" value="' + resume.name + '"></div>';
   $('#NAME_DIV').prepend(name_fld);
@@ -240,12 +247,12 @@ function add_db_type(db='Database Type'){
   var db_type = db.replace(/[(){}]/g,'');//remove parenthesis/braces
   db_type = db_type.replace(/ /g,'__');//replace spaces with underscores
   var dbt_id = db_type + dbt_ctr; 
-  var dbtype = '<div class="container row form-inline border-top">';
+  var dbtype = '<div data-id="' + dbt_id + '" class="container row form-inline border-top">';
   dbtype += '<label class="control-label" for="db-' + dbt_id + '">Database Type</label>';
   dbtype += '<input data-id="' + dbt_id + '" id="db-' + dbt_id + '" type="text" class="form-control w-75 DBTYPE"';
   dbtype += ' aria-describedby="database type" value="' + db + '">';
   dbtype += '<button class="btn form-control btn-danger remove_button" type="button">-</button>';
-  dbtype += '<button class="btn form-control btn-success add_new_db_instance" type="button" >+</button><div id="' + dbt_id + '" class="row container border-bottom"></div></div><br>';
+  dbtype += '<button class="btn form-control btn-success add_new_db_instance" type="button" >+</button><div id="' + dbt_id + '" class="row container w-50 border-bottom"></div></div>';
   $('#DATABASE_DIV').append(dbtype);
   dbt_ctr += 1;
   return dbt_id;
@@ -295,7 +302,6 @@ function add_pproj( pproj = 'Personal Project'){
 
 var job_ctr = 0;
 function add_job(job={'Employer':'Employer','from':'From','to':'To','Position':'Job Title','Duties':'Job Duties'}){
- // console.log(JSON.stringify(job, null, 2));8
   var job_div = '<div class="row form-inline border-secondary WORK_HISTORY">';
   job_div += '<label class="control-label" for="job-' + job_ctr + '">Employer</label>';
   job_div += '<input type="text" class="form-control JOB_EMPLOYER" id="job-' + job_ctr + '" aria-describedby="Employer" value="' + job.Employer + '">';
@@ -315,6 +321,7 @@ function add_job(job={'Employer':'Employer','from':'From','to':'To','Position':'
 
 function save(){
   var resume_JSON = {};
+  resume_JSON.date_modified = new Date();
   resume_JSON.name = $('#NAME').val();
   resume_JSON.location = $('#LOCATION').val();
   resume_JSON.email = $('#EMAIL').val();
@@ -357,7 +364,6 @@ function save(){
     var dbClass = $(this).attr('data-id');
     resume_JSON['Database'][dbtypeName] = [] ;
     $('.' + dbClass).each(function(index, val){
-      console.log("dbi : " + $(this).val());
       resume_JSON['Database'][dbtypeName].push($(this).val());
     });
   });
@@ -399,10 +405,10 @@ function save(){
   });
 
   console.log(JSON.stringify(resume_JSON, null, 2));
+  display_resume(resume_JSON,true);
 
   /*
   var editing_page = $("#EDIT").html();
-  //$('#EDIT').html('hungry');
 
   $.ajax({
     type: 'POST',
@@ -418,6 +424,6 @@ function save(){
       console.log(e);
     }
   });
-  */
   //console.log(editing_page);
+*/
 }
