@@ -1,4 +1,5 @@
 //<!--     DISPLAY RESUME    -->
+var cur_resume = {};
 $(document).ready(function(){
   $.ajax({
     type: 'GET',
@@ -6,9 +7,8 @@ $(document).ready(function(){
     dataType: 'json',
     url: 'get',
     success: function (resume_json) {
-      console.log('sucess!, resume loaded');
-      //display_resume(resume_json);
-      add_edit_flds(resume_json);
+      cur_resume = resume_json;
+      add_edit_flds(cur_resume);
     }
   });
 });
@@ -92,6 +92,13 @@ function display_resume(resume, preview=false){
     $('#WORK_DIV').append(position);
   });
 
+  if(preview){
+    var s_btn = '<div id="SAVE_CANCEL_DIV_BTN" class="container row E_BTN">';
+    s_btn += '<button class="btn-lg btn-success" type="button" onclick="">SAVE RESUME</button>';
+    s_btn += '<button class="btn-lg btn-warning edit_resume" type="button"">CANCEL</button></div>'; 
+    $('#END').append(s_btn);
+  }
+
 }//close display_resume
 
 //clears each section of resume scaffold 
@@ -122,11 +129,12 @@ function add_edit_btns(){
   $('#RESEARCH_DIV').append('<div id="RSCH_DIV_BTN EDIT_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_rsch()">Add Research</button></div>');
   $('#PPROJ_SECTION_DIV').append('<div id="PPROJ_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_pproj()">Add Personal Project</button></div>');
   $('#EMPLOYMENT_DIV').append('<div id="WORK_DIV_BTN" class="container row E_BTN"><button class="btn btn-success" type="button" onclick="add_job()">Add Job</button></div>');
-  $('#END').append('<div id="PREVIEW_DIV_BTN" class="container row E_BTN"><button class="btn-lg btn-success" type="button" onclick="save()">PREVIEW RESUME</button></div>');
+  $('#END').append('<div id="PREVIEW_DIV_BTN" class="container row E_BTN"><button class="btn-lg btn-success preview_resume" type="button">PREVIEW RESUME</button></div>');
 }
 
 function add_edit_flds(resume={}){
-clear_resume();
+  console.log(JSON.stringify(resume, null, 2));
+  clear_resume();
   add_edit_btns();
   add_top_section(resume);
   //add degrees
@@ -174,6 +182,15 @@ clear_resume();
   });
 
 }
+
+$(document).on("click", ".preview_resume", function(){
+cur_resume = collect_resume();
+  display_resume(cur_resume, true);
+});
+
+$(document).on("click", ".edit_resume", function(){
+  add_edit_flds(cur_resume);
+});
 
 function add_top_section(resume = {'name': 'Name', 'location': 'Location', 'email': 'email', 'website': 'Website', 'github': 'GitHub', 'linkedin': 'Linkedin'}){
   $('#TOP_DIV').html("Date Modified: " + resume.date_modified);
@@ -319,7 +336,7 @@ function add_job(job={'Employer':'Employer','from':'From','to':'To','Position':'
   job_ctr += 1;
 }
 
-function save(){
+function collect_resume(){
   var resume_JSON = {};
   resume_JSON.date_modified = new Date();
   resume_JSON.name = $('#NAME').val();
@@ -404,12 +421,10 @@ function save(){
     resume_JSON['Work Experience'].push(job);
   });
 
-  console.log(JSON.stringify(resume_JSON, null, 2));
-  display_resume(resume_JSON,true);
+  //display_resume(resume_JSON,true);
+  return resume_JSON;
 
   /*
-  var editing_page = $("#EDIT").html();
-
   $.ajax({
     type: 'POST',
     // Provide correct Content-Type, so that Flask will know how to process it.
@@ -424,6 +439,5 @@ function save(){
       console.log(e);
     }
   });
-  //console.log(editing_page);
 */
 }
