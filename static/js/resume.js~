@@ -1,17 +1,26 @@
 //<!--     DISPLAY RESUME    -->
-var cur_resume = {};
+// GLOBAL VARIABLE 
+var CUR_RESUME = {};
 $(document).ready(function(){
+  CUR_RESUME = get_resume();
+  add_edit_flds(CUR_RESUME);
+});
+
+//Note: this is NOT asynchronos 
+function get_resume(){
+  var r;
   $.ajax({
+    async: false,
     type: 'GET',
     // This is the type of data you're expecting back from the server.
     dataType: 'json',
     url: 'get',
-    success: function (resume_json) {
-      cur_resume = resume_json;
-      add_edit_flds(cur_resume);
+    success: function (resume_json){
+      r = resume_json;
     }
   });
-});
+  return r;
+}
 
 //<!--     DISPLAY RESUME -->
 function display_resume(resume, preview=false){
@@ -79,7 +88,7 @@ function display_resume(resume, preview=false){
 
   //WORK HISTORY
   $.each(resume['Work Experience'], function(index, job){
-    var position = '<div class="row container">';
+    var position = '<div class="row container border-bottom">';
     position += '<div class="w-25">';
     position += '<div class="container row text-white">Employer: ' + job.Employer + '</div>';
     position += '<div class="container row text-white">Title: ' + job.Position + '</div>';
@@ -115,7 +124,7 @@ function clear_resume(){
 //<!--     ADD EDIT LOGIC  -->
 // all remove buttons use this
 $(document).on("click", ".remove_button", function(){
-    $(this).parent().remove();
+  $(this).parent().remove();
 });
 
 function add_edit_btns(){
@@ -133,7 +142,6 @@ function add_edit_btns(){
 }
 
 function add_edit_flds(resume={}){
-  console.log(JSON.stringify(resume, null, 2));
   clear_resume();
   add_edit_btns();
   add_top_section(resume);
@@ -184,12 +192,12 @@ function add_edit_flds(resume={}){
 }
 
 $(document).on("click", ".preview_resume", function(){
-cur_resume = collect_resume();
-  display_resume(cur_resume, true);
+  CUR_RESUME = collect_resume();
+  display_resume(CUR_RESUME, true);
 });
 
 $(document).on("click", ".edit_resume", function(){
-  add_edit_flds(cur_resume);
+  add_edit_flds(CUR_RESUME);
 });
 
 function add_top_section(resume = {'name': 'Name', 'location': 'Location', 'email': 'email', 'website': 'Website', 'github': 'GitHub', 'linkedin': 'Linkedin'}){
@@ -319,7 +327,7 @@ function add_pproj( pproj = 'Personal Project'){
 
 var job_ctr = 0;
 function add_job(job={'Employer':'Employer','from':'From','to':'To','Position':'Job Title','Duties':'Job Duties'}){
-  var job_div = '<div class="row form-inline border-secondary WORK_HISTORY">';
+  var job_div = '<div class="row form-inline border-bottom WORK_HISTORY">';
   job_div += '<label class="control-label" for="job-' + job_ctr + '">Employer</label>';
   job_div += '<input type="text" class="form-control JOB_EMPLOYER" id="job-' + job_ctr + '" aria-describedby="Employer" value="' + job.Employer + '">';
   job_div += '<label class="control-label" for="from-' + job_ctr + '">From</label>';
@@ -327,7 +335,7 @@ function add_job(job={'Employer':'Employer','from':'From','to':'To','Position':'
   job_div += '<label class="control-label" for="to-' + job_ctr + '">To</label>';
   job_div += '<input type="text" class="form-control JOB_TO" id="to-' + job_ctr + '" aria-describedby="to" value="' + job.to + '">';
   job_div += '<label class="control-label" for="title-' + job_ctr + '">Title</label>';
-  job_div += '<input type="text" class="form-control JOB-TITLE" id="title-' + job_ctr + '" aria-describedby="title" value="'+ job.Position +'">';
+  job_div += '<input type="text" class="form-control JOB_TITLE" id="title-' + job_ctr + '" aria-describedby="title" value="'+ job.Position +'">';
   job_div += '<label class="control-label" for="duties-' + job_ctr + '">Duties</label>';
   job_div += '<textarea class="form-control w-75 JOB_DUTIES" name="duties-' + job_ctr + '" aria-describedby="duties">' + job.Duties + '</textarea>';
   job_div += '<button class="btn btn form-control form-inline btn-danger remove_button" type="button">Remove</button>';
@@ -439,5 +447,5 @@ function collect_resume(){
       console.log(e);
     }
   });
-*/
-}
+  */
+  }
