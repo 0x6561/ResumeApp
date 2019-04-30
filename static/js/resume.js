@@ -22,7 +22,8 @@ function get_resume(){
   return r;
 }
 
-function put_resume(rsm){
+function save_resume(rsm){
+  //console.log("saving...  -> " + JSON.stringify(rsm,null,2));
   $.ajax({
     type: 'POST',
     // Provide correct Content-Type, so that Flask will know how to process it.
@@ -33,12 +34,15 @@ function put_resume(rsm){
     dataType: 'html',
     url: 'save',
     success: function (e) {
-      $('#EDIT').html(e)
-      display_resume(e);
-      console.log("save success: " + e);
+      clear_resume();
+      console.log("save success: " + JSON.stringify(e,null,2));
     }
   });
 }
+
+$(document).on("click", ".save_resume", function(){
+  save_resume(CUR_RESUME);
+});
 
 //<!--     DISPLAY RESUME -->
 function display_resume(resume, preview=false){
@@ -121,7 +125,7 @@ function display_resume(resume, preview=false){
 
   if(preview){
     var s_btn = '<div id="SAVE_CANCEL_DIV_BTN" class="container row E_BTN">';
-    s_btn += '<button class="btn-lg btn-success" type="button" onclick="">SAVE RESUME</button>';
+    s_btn += '<button class="btn-lg btn-success save_resume" type="button" onclick="">SAVE RESUME</button>';
     s_btn += '<button class="btn-lg btn-warning edit_resume" type="button"">CANCEL</button></div>'; 
     $('#END').append(s_btn);
   }
@@ -132,6 +136,9 @@ function display_resume(resume, preview=false){
 // (to add editing elements)
 function clear_resume(){
   $(".FLD").each(function(){
+    $(this).empty();
+  });
+  $(".FLD_LINK").each(function(){
     $(this).empty();
   });
   $(".E_BTN").each(function(){

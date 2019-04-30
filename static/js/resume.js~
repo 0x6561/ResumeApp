@@ -22,6 +22,28 @@ function get_resume(){
   return r;
 }
 
+function save_resume(rsm){
+  //console.log("saving...  -> " + JSON.stringify(rsm,null,2));
+  $.ajax({
+    type: 'POST',
+    // Provide correct Content-Type, so that Flask will know how to process it.
+    contentType: 'application/json',
+    // Encode your data as JSON.
+    data: JSON.stringify(rsm),
+    // This is the type of data you're expecting back from the server.
+    dataType: 'html',
+    url: 'save',
+    success: function (e) {
+      clear_resume();
+      console.log("save success: " + JSON.stringify(e,null,2));
+    }
+  });
+}
+
+$(document).on("click", ".save_resume", function(){
+  save_resume(CUR_RESUME);
+});
+
 //<!--     DISPLAY RESUME -->
 function display_resume(resume, preview=false){
   clear_resume();
@@ -103,7 +125,7 @@ function display_resume(resume, preview=false){
 
   if(preview){
     var s_btn = '<div id="SAVE_CANCEL_DIV_BTN" class="container row E_BTN">';
-    s_btn += '<button class="btn-lg btn-success" type="button" onclick="">SAVE RESUME</button>';
+    s_btn += '<button class="btn-lg btn-success save_resume" type="button" onclick="">SAVE RESUME</button>';
     s_btn += '<button class="btn-lg btn-warning edit_resume" type="button"">CANCEL</button></div>'; 
     $('#END').append(s_btn);
   }
@@ -432,20 +454,4 @@ function collect_resume(){
   //display_resume(resume_JSON,true);
   return resume_JSON;
 
-  /*
-  $.ajax({
-    type: 'POST',
-    // Provide correct Content-Type, so that Flask will know how to process it.
-    contentType: 'application/json',
-    // Encode your data as JSON.
-    data: JSON.stringify(resume_JSON),
-    // This is the type of data you're expecting back from the server.
-    dataType: 'html',
-    url: 'preview',
-    success: function (e) {
-      $('#EDIT').html(e)
-      console.log(e);
-    }
-  });
-  */
   }

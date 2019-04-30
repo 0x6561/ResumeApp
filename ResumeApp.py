@@ -56,8 +56,9 @@ def read_resume():
         resume = json.loads(infile.read())
         return resume
 
-@app.route('/put')
-def add_resume(resume = read_resume()):
+@app.route('/save', methods=['POST'])
+def add_resume():
+    resume = request.json
     db.resumeDB.insert_one(resume)
     return 'resume inserted'
     
