@@ -12,9 +12,10 @@
     <title id="title"></title>
   </head>
   <body>
-    <div id="TOP_DIV" class="container-fluid w-75"></div>
+    <div id="RESUME_FLD_DIV" class="container-fluid w-100 text-white">
     <div class="container-fluid h-100 w-75">
 
+    <div id="DATE_DIV" class="container-fluid w-100 h5 text-white"></div>
       <div id="NAME_DIV" class="row justify-content-center align-items-center h1 FLD"></div>
       <div id="LOCATION_DIV" class="h4 row align-items-center justify-content-center container FLD"></div>
 
@@ -121,6 +122,24 @@
         </li>
       </ul>
     <div id="END" class="container row w-100"></div>
+    </div>
+
+<!-- normally hidden, used to display list of resumes  -->
+    <div id="RESUME_LIST_DIV" class="container text-white">
+      <div class="container row justify-content-center align-items-center h1 border-bottom">Saved Resumes</div>
+      <table class="table table-striped table-bordered table-hover text-white">
+        <thead>
+          <tr>
+            <th>Unique ID</th>
+            <th>NameID</th>
+            <th>Location</th>
+            <th>Date Modified</th>
+          </tr>
+        </thead>
+        <tbody id="RESUME_LIST_TABLE">
+        </tbody>
+      </table>
+    </div>
 
       <!-- JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->

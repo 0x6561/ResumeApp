@@ -60,7 +60,11 @@ def read_resume():
 def add_resume():
     resume = request.json
     db.resumeDB.insert_one(resume)
-    return 'resume inserted'
+    r_cur = db.resumeDB.find( {},{'date_modified': 'null','name': 1, 'location': 1, '_id'; 0 } )
+    r_list= [] 
+    for r in r_cur:
+        r_list.append(r)
+    return json.dumps(r_list)
     
 def get_resume():
     return db.resumeDB.find_one()

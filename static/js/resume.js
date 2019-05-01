@@ -2,6 +2,7 @@
 // GLOBAL VARIABLE 
 var CUR_RESUME = {};
 $(document).ready(function(){
+  $('#RESUME_LIST_DIV').hide();
   CUR_RESUME = get_resume();
   add_edit_flds(CUR_RESUME);
 });
@@ -25,17 +26,24 @@ function get_resume(){
 function save_resume(rsm){
   //console.log("saving...  -> " + JSON.stringify(rsm,null,2));
   $.ajax({
+    async: 'false',
     type: 'POST',
     // Provide correct Content-Type, so that Flask will know how to process it.
     contentType: 'application/json',
     // Encode your data as JSON.
     data: JSON.stringify(rsm),
     // This is the type of data you're expecting back from the server.
-    dataType: 'html',
+    dataType: 'text',
     url: 'save',
     success: function (e) {
-      clear_resume();
-      console.log("save success: " + JSON.stringify(e,null,2));
+      $('#RESUME_FLD_DIV').hide();
+      $('#RESUME_LIST_DIV').show();
+      //console.log("save success: " + JSON.stringify(e,null,2));
+      add_resume_list(e);
+    },
+    error: function (e){
+      console.log("ERROR! : " + JSON.stringify(e,null,2));
+
     }
   });
 }
@@ -132,6 +140,23 @@ function display_resume(resume, preview=false){
 
 }//close display_resume
 
+function add_resume_list(r_list){
+  r_list_json = JSON.parse(r_list);
+  console.log(" adding resume list.. " + JSON.stringify(r_list_json));
+
+  $.each(r_list_json, function(index, resume){
+    var tr = '<tr>';
+    tr += '<td>' + resume.name + '</td>';
+    tr += '<td>' + resume.location + '</td>';
+    if(['date_modified'] in resume){
+      tr += '<td>' + resume.date_modified + '</tr>';
+    }else{
+      tr += '<td>N/A</tr>';
+    }
+    $('#RESUME_LIST_TABLE').append(tr);
+  });
+}
+
 //clears each section of resume scaffold 
 // (to add editing elements)
 function clear_resume(){
@@ -226,7 +251,7 @@ $(document).on("click", ".edit_resume", function(){
 });
 
 function add_top_section(resume = {'name': 'Name', 'location': 'Location', 'email': 'email', 'website': 'Website', 'github': 'GitHub', 'linkedin': 'Linkedin'}){
-  $('#TOP_DIV').html("Date Modified: " + resume.date_modified);
+  $('#DATE_DIV').html("Date Modified: " + resume.date_modified);
   var name_fld = '<div class="form-inline"><label class="control-label" for="name">Name</label>';
   name_fld += '<input type="text" class="form-control" id="NAME" aria-describedby="name" value="' + resume.name + '"></div>';
   $('#NAME_DIV').prepend(name_fld);
